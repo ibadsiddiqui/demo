@@ -1,12 +1,12 @@
 import React from 'react'
 import {
     NetInfo,
-
+    View
 } from 'react-native'
-import { Navigation } from 'react-native-navigation'
 import SplashScreen from 'react-native-splash-screen'
-// import goToConfirmPINScreen from './ConfirmPINScreen'
-import { goToConfirmPINScreen } from './../../Navigation/AppNavigation'
+import { goToConfirmPINScreen } from './../../../src/navigation'
+
+// import { goToConfirmPINScreen } from './../../Navigation/AppNavigation'
 
 // import {Navigation} from 'react-native-navigation'
 import Loader from './../../Components/Loader'
@@ -66,6 +66,9 @@ export default class SplashScreenLoader extends React.PureComponent {
                     offline: false,
                     online: true,
                 })
+                
+                if (this.state.online == true && this.state.offline == false)
+                    goToConfirmPINScreen()
 
             }, 3000);
         } else {
@@ -75,23 +78,23 @@ export default class SplashScreenLoader extends React.PureComponent {
                     offline: true,
                     online: false,
                 })
-
             }, 3000);
         }
-        // if(this.state.)
-
     }
 
     render() {
 
         // const Load = <Loader />
-        if (this.state.isFetching == true && this.state.offline == false && this.state.online == false)
-            return <Loader />
-        if (this.state.online == true && this.state.offline == false)
-            Navigation.push(this.props.componentId, {
-                component: {
-                    name: 'ConfirmPINScreen',
+        return (
+            <View>
+                {
+
+                    this.state.isFetching == true && this.state.offline == false && this.state.online == false
+                    &&
+                    <Loader />
                 }
-            });
+            </View>
+        )
+
     }
 }
