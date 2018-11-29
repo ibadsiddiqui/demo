@@ -2,7 +2,7 @@
 import React from 'react';
 import {
   AsyncStorage,
-  ToastAndroid,
+  AlertIOS,
   BackHandler,
   Image,
   StatusBar,
@@ -15,6 +15,7 @@ const pinCode = 'PINCode';
 
 import styles from '../Styles/PINScreenStyles';
 import SplashScreen from 'react-native-splash-screen';
+import {goToLoginScreen} from './../../../src/navigation'
 export default class ConfirmPINScreen extends React.PureComponent {
 
   constructor() {
@@ -76,18 +77,19 @@ export default class ConfirmPINScreen extends React.PureComponent {
     if (this.state.PIN.length >= 4) {
       if (this.state.isPinCode) {
         if (this.compare(this.state.PIN, this.state.savePinCode)) {
-          this.props.navigation.navigate('LoginScreen')
+          goToLoginScreen()
         }
-
         else {
+          AlertIOS.alert(
+            'Incorrect PIN',
+            'All your data are belong to us.'
+           );
           ToastAndroid.showWithGravity("Incorrect PIN", ToastAndroid.SHORT, ToastAndroid.BOTTOM)
         }
       }
       else {
         await AsyncStorage.setItem('PINCode', JSON.stringify(this.state.PIN))
-        ToastAndroid.showWithGravity("Setting New PIN Code", ToastAndroid.SHORT, ToastAndroid.BOTTOM)
-
-        this.props.navigation.navigate('LoginScreen')
+        goToLoginScreen()
       }
     }
   }
